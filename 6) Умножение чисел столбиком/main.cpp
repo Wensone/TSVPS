@@ -57,6 +57,6 @@ int main() {
         printf("%d", buffer[i]);
     }
     printf("\n\n");
-    printf("Trudoemkost': %d\n\n", trudoemkost);
+    printf("Operations: %d\n\n", trudoemkost);
     system("pause");
 }

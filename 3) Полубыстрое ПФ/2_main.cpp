@@ -2,9 +2,11 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <iostream>
 
-int kaef_one = 10, kaef_two = 5;
+using namespace std;
 
+int kaef_one = 5, kaef_two = 2;
 
 struct complex {
     double real;
@@ -167,10 +169,10 @@ int main() {
     complex res[n], source[n],
     		res1[n], back[n];
     srand(time(NULL));
-    printf("\t\tИсходный: ");
+    cout << fixed << "Source array: ";
     for (int i = 0; i < n; i++) {
         array[i] = i;
-        printf("%lf ", array[i]);
+        cout << fixed << array[i];
     }
 
     array[0] = 0;
@@ -183,63 +185,58 @@ int main() {
     array[7] = 1;
     array[8] = 0;
     array[9] = 1;
-/*
-    for (int i = 0; i < n; i++) {
-        printf("%lf ", array[i]);
-    }
-    printf("\n\n");*/
 
     // Discrete is on
     direct_transform_fourier(array, res);
-    printf("\t\tR Дискретное: ");
+    cout << fixed << "Re Discrete: ";
     for (int i = 0; i < n; i++) {
-        printf("%lf ", res[i].real);
+        cout << fixed << res[i].real;
     }
-    printf("\n");
-    printf("\t\tI Дискретное: ");
+    cout << fixed << "\n";
+    cout << fixed << "Im Discrete: ";
     for (int i = 0; i < n; i++) {
-        printf("%lf ", res[i].image);
+        cout << fixed << res[i].image;
     }
-    printf("\n\n");
+    cout << fixed << "\n\n";
     back_transform_fourier(res, source);
-    printf("\t\tR Дискретное исходный: ");
+    cout << fixed << "Re Discrete back: ";
     for (int i = 0; i < n; i++) {
-        printf("%lf ", source[i].real);
+        cout << fixed << source[i].real;
     }
-    printf("\n");
-    printf("\t\tI Дискретное исходный: ");
+    cout << fixed << "\n";
+    cout << fixed << "Im Discrete back: ";
     for (int i = 0; i < n; i++) {
-        printf("%lf ", source[i].image);
+        cout << fixed << source[i].image;
     }
-    printf("\n\n");
+    cout << fixed << "\n\n";
     // Discrete is off
 
 
     // Half quick is on
     half_quick_transform(array, res1);
-    printf("\t\tR Полубыстрое: ");
+    cout << fixed << "Rm half-quick: ";
     for (int i = 0; i < n; i++) {
-        printf("%lf ", res1[i].real);
+        cout << fixed << res1[i].real;
     }
-    printf("\n");
-    printf("\t\tI Полубыстрое: ");
+    cout << fixed << "\n";
+    cout << fixed << "Im half-quick: ";
     for (int i = 0; i < n; i++) {
-        printf("%lf ", res1[i].image);
+        cout << fixed << res1[i].image;
     }
-    printf("\n\n");
     back_half_quick_transform(res1, back);
-    printf("\t\tR Полубыстрый исходный: ");
+    cout << fixed << "\n\nRe half-quick back: ";
     for (int i = 0; i < n; i++) {
-        printf("%lf ", back[i].real);
+        cout << fixed << back[i].real;
     }
-    printf("\n");
-    printf("\t\tI Полубыстрый исходный: ");
+    cout << fixed << "\nIm half-quick back: ";
     for (int i = 0; i < n; i++) {
-        printf("%lf ", back[i].image);
+        cout << fixed << back[i].image;
     }
-    printf("\n\n");
-    printf("\t\tКол-во операций при дискретном: %d\n\n", count);
-    printf("\t\tКол-во операций при полубыстром: %d\n\n", count_1 + count_2);
+
+    cout << fixed << endl << endl;
+
+    cout << fixed << "\nDiscrete operations: " << count;
+    cout << fixed << "\nHalf-quick operations: " << count_1 + count_2 << endl;
     // Half quick is off
 
     return 0;

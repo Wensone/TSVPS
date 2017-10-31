@@ -5,7 +5,7 @@
 #include <complex>
 #include <bitset>
 #include <stack>
-#include <conio.h>
+#include <iostream>
 
 using namespace std;
 int count = 0, count_dp = 0, count_pb_1 = 0, count_pb_2 = 0, count_pb_3 = 0, count_b_1 = 0, count_b_2 = 0;
@@ -262,7 +262,7 @@ void svertka_BPF(complex <double> *a, complex <double> *b, complex <double> *res
 int main() {
     srand(time(NULL));
     printf("1) Normal svertka\n2) Svertka DPF\n3) Svertka PBDF\n4) Svertka BPF\n\n");
-    char ch = getch();
+    char ch = getchar();
     switch (ch) {
         case '1': {
             system("cls");
@@ -288,7 +288,7 @@ int main() {
             normal_svertka(a, b, c);
             for (int i = 0; i < size_1 + size_2 - 1; i++) printf("%d ", c[i]);
             printf("\n\n");
-            printf("Trudoemkost': %d\n\n", count);
+            printf("Operations: %d\n\n", count);
             system("pause");
             exit(1);
         }
@@ -319,7 +319,7 @@ int main() {
                 printf("%lf ", result[i].imag());
             }*/
             printf("\n\n");
-            printf("Trudoemkost': %d\n\n", count_dp);
+            printf("Operations: %d\n\n", count_dp);
             system("pause");
             exit(1);
         }
@@ -350,7 +350,7 @@ int main() {
                 printf("%lf ", result[i].imag());
             }*/
             printf("\n\n");
-            printf("Trudoemkost': %d\n\n", count_pb_1 + count_pb_2 + count_pb_3);
+            printf("Operations: %d\n\n", count_pb_1 + count_pb_2 + count_pb_3);
             system("pause");
             exit(1);
         }
@@ -364,12 +364,12 @@ int main() {
             printf("\n\nMassiv A: ");
             for (int i = 0; i < size; i++) {
                 arr_1[i] = i + 1;
-                printf("%lf ", arr_1[i]);
+                cout << fixed << arr_1[i];
             }
             printf("\nMassiv B: ");
             for (int i = 0; i < size; i++) {
                 arr_2[i] = i + 1;
-                printf("%lf ", arr_2[i]);
+                cout << fixed << arr_2[i];
             }
             svertka_BPF(arr_1, arr_2, result);
             printf("\n\nReal part: ");
@@ -381,7 +381,7 @@ int main() {
                 printf("%lf ", result[i].imag());
             }*/
             printf("\n\n");
-            printf("Trudoemkost': %d\n\n", count_b_1 + count_b_2);
+            printf("Operations: %d\n\n", count_b_1 + count_b_2);
             system("pause");
             exit(1);
         }

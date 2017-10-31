@@ -4,14 +4,17 @@
 #include <complex>
 #include <bitset>
 #include <stack>
+#include <iostream>
 
 using namespace std;
-const int n = 16, r = 4;
+
+const int n = 16;
 int count = 0;
 
 void create_A_0(complex <double> *array, complex <double> *result) {
     int index = 0;
     unsigned long long sum = 0;
+    const int r = log2(n);
     bitset <r> set_bits;
     for (int loop = 0; loop < n; loop++) {
         for (size_t i = 0, j = r - 1; i < r; i++) {
@@ -70,47 +73,32 @@ int main() {
     complex <double> source[n];
     complex <double> *result = new complex <double> [n];
     printf("Source massive: ");
-    /*for (int i = 0; i < n; i++) {
-        source[i] = i;
-        printf("%lf ", source[i].real());
-    }*/
-    source[0] = 0;
-    source[1] = 1;
-    source[2] = 0;
-    source[3] = 1;
-    source[4] = 0;
-    source[5] = 0;
-    source[6] = 1;
-    source[7] = 0;
-    source[8] = 0;
-    source[9] = 1;
-    source[10] = 0;
-    source[11] = 1;
-    source[12] = 0;
-    source[13] = 0;
-    source[14] = 1;
-    source[15] = 0;
-    printf("\n\n");
+    for (int i = 0; i < n; i++) {
+        if((i+1) % 2 == 0) source[i] = 1.0;
+        else source[i] = 0.0;
+        cout << fixed << source[i].real();
+    }
+    cout.precision(5);
     FFT(source, result);
-    printf("Real part: ");
+    cout << fixed << "\n\nRe part: ";
     for (int i = 0; i < n; i++) {
-        printf("%lf ", result[i].real());
+        cout << fixed << result[i].real();
     }
-    printf("\nImage part: ");
-    /*for (int i = 0; i < n; i++) {
-        printf("%lf ", result[i].imag());
-    }*/
-    printf("\n\n");
-    printf("Tridoemkost': %d\n\n", count);
+    cout << fixed << "\nIm part: ";
+    for (int i = 0; i < n; i++) {
+        cout << fixed << result[i].imag();
+    }
+
     back_FFT(result);
-    printf("Real part: ");
-    /*for (int i = 0; i < n; i++) {
-        printf("%lf ", result[i].real());
-    }
-    printf("\nImage part: ");
+    cout << fixed << "\n\nRe part: ";
     for (int i = 0; i < n; i++) {
-        printf("%lf ", result[i].imag());
-    }*/
-    printf("\n\n");
-    system("pause");
+        cout << fixed << result[i].real();
+    }
+    cout << fixed << "\nIm part: ";
+    for (int i = 0; i < n; i++) {
+        cout << fixed << result[i].imag();
+    }
+    cout << fixed << endl << endl << "Operations:" << count / 2 << endl;
+    
+    return 0;
 }
