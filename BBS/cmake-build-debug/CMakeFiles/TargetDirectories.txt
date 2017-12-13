@@ -1,0 +1,3 @@
+/home/kotik/Desktop/RGZ_TSVPS_V9/BBS/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/kotik/Desktop/RGZ_TSVPS_V9/BBS/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/kotik/Desktop/RGZ_TSVPS_V9/BBS/cmake-build-debug/CMakeFiles/BBS.dir

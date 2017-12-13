@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/BBS.dir/v9.cpp.o  -o BBS 

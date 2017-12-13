@@ -1,0 +1,4 @@
+/bin/clion-2017.2.1/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/kotik/Desktop/RGZ_TSVPS_V9/BBS
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/kotik/Desktop/RGZ_TSVPS_V9/BBS/cmake-build-debug
