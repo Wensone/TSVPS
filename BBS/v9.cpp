@@ -2,6 +2,7 @@
 #include <climits>
 #include <vector>
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 
@@ -161,7 +162,7 @@ void branch_border(vector<p> path, int count = N - 1) {
     if (count == 1) {
         //puts("Lower floor");
         operations_bb++;
-        if (tmpPath[0].at(s).h < record) {
+        if (tmpPath[0].at(s).h <= record) {
             operations_bb++;
             finPath = tmpPath[0];
             record = tmpPath[0].at(s).h;
@@ -220,11 +221,11 @@ void Bust(vector<p> path, int count = N - 1, int m = 0) {
 
 void path_print(vector<p> path) {
     for (int i = 0; i < path.size(); ++i) {
-        printf("%i ", path.at(i).v + 1);
-        printf("-> ");
+        cout << path.at(i).v + 1;
+        cout << " -> ";
     }
-    printf("%i", path.at(0).v + 1);
-    printf("\nRecord(H) = %i\n\n", path.at(path.size() - 1).h);
+    cout << path.at(0).v + 1;
+    cout << "\nRecord(H) = " << path.at(path.size() - 1).h << "\n\n";
 }
 
 int main() {
@@ -233,8 +234,8 @@ int main() {
     p x;
 
     printf("Enter start vertex: ");
-    scanf("%d", &startV);
-    startV--;
+    cin >> startV;
+    startV -= 1;
     x.v = startV;
 
     mass = inf;
