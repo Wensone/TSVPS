@@ -6,24 +6,29 @@
 
 using namespace std;
 
-#define N 6
-#define inf (INT_MAX/10)
-
-int record, mass, operations_bb, operations_bust;
-int matrix[N][N];
-
-struct p {
-    int v;
-    int h;
+struct Point {
+    int vertex;
+    int height;
 };
 
-vector<p> finPath;
+const int N = 6;
 
-int record_find(vector<int> path) {
+const long INF = ( INT_MAX / 10 );
+
+int record,
+    mass,
+    operations_bb,
+    operations_bust;
+
+int matrix[N][N];
+
+vector<Point> final_path;
+
+int recordFind(vector<int> path) {
     int newN;
     int h = 0;
-    newN = N - (path.size() - 1);
-    int **a = new int *[N];
+    newN = static_cast<int>(N - (path.size() - 1));
+    auto **a = new int *[N];
     for (int i = 0; i < N; i++) {
         a[i] = new int[N];
         for (int j = 0; j < N; ++j) {
@@ -35,36 +40,36 @@ int record_find(vector<int> path) {
         h += matrix[path[i]][path[i + 1]];
         operations_bb++;
         for (int j = 0; j < N; j++) {
-            a[path[i]][j] = inf;
+            a[path[i]][j] = INF;
             operations_bb++;
         }
 
         for (int k = 0; k < N; ++k) {
-            a[k][path[i + 1]] = inf;
+            a[k][path[i + 1]] = INF;
             operations_bb++;
         }
     }
 
     int min;
     for (int i = 0; i < N; i++) {
-        min = inf;
+        min = INF;
         for (int j = 0; j < N; j++) {
             if (a[i][j] < min) min = a[i][j];
         }
-        if (min != inf) {
+        if (min != INF) {
             operations_bb++;
             h += min;
             for (int j = 0; j < N; j++)
-                if (a[i][j] != inf) a[i][j] -= min;
+                if (a[i][j] != INF) a[i][j] -= min;
         }
     }
 
     for (int i = 0; i < N; i++) {
-        min = inf;
+        min = INF;
         for (int j = 0; j < N; j++) {
             if (a[j][i] < min) min = a[j][i];
         }
-        if (min != inf) {
+        if (min != INF) {
             operations_bb++;
             h += min;
         }
@@ -75,16 +80,16 @@ int record_find(vector<int> path) {
     return h;
 }
 
-vector<int> greedy(int startV) {
+vector<int> isVisited(int startV) {
     int min, ind = startV;
     bool passed[N], check = true;
     vector<int> v;
 
-    for (int i = 0; i < N; ++i) passed[i] = false;
+    for (bool &i : passed) i = false;
     passed[startV] = true;
 
     for (int i = startV; check; i = ind) {
-        min = inf * 10;
+        min = INF * 10;
         check = false;
 
         for (int j = 0; j < N; ++j) {
@@ -112,9 +117,9 @@ vector<int> greedy(int startV) {
     return v;
 }
 
-bool presence(vector<p> path, int vertex) {
-    for (int i = 0; i < path.size(); ++i) {
-        if (path.at(i).v == vertex) {
+bool isVertex(vector<Point> path, int vertex) {
+    for (auto &i : path) {
+        if (i.vertex == vertex) {
             return true;
         }
     }
@@ -122,14 +127,14 @@ bool presence(vector<p> path, int vertex) {
     return false;
 }
 
-void branch_border(vector<p> path, int count = N - 1) {
-    p x, min;
+void branchBorder(vector<Point> path, int count = N - 1) {
+    Point x{}, min{};
     vector<int> tmp;
-    int pSize = path.size(), ind = 0;
-    vector<p> tmpPath[count];
-    min.h = inf;
+    auto pSize = static_cast<int>(path.size()), ind = 0;
+    vector<Point> tmpPath[count];
+    min.height = INF;
     for (int i = 0; i < pSize; ++i) {
-        tmp.push_back(path.at(i).v);
+        tmp.push_back(path.at(static_cast<unsigned long>(i)).vertex);
     }
 
     for (int i = 0; i < count; ++i) {
@@ -137,48 +142,48 @@ void branch_border(vector<p> path, int count = N - 1) {
     }
 
     tmp.push_back(0);
-    int tSize = tmp.size() - 1;
+    auto tSize = static_cast<int>(tmp.size() - 1);
 
     for (int i = 0; i < N; ++i) {
         operations_bb++;
-        if (!presence(path, i)) {
-            tmp.at(tSize) = i;
-            x.h = record_find(tmp);
-            x.v = i;
+
+        if (!isVertex(path, i)) {
+            tmp.at(static_cast<unsigned long>(tSize)) = i;
+            x.height = recordFind(tmp);
+            x.vertex = i;
 
             operations_bb++;
-            if (x.h <= record) {
+            if (x.height <= record) {
                 operations_bb++;
-                min.h = x.h;
-                min.v = x.v;
+                min.height = x.height;
+                min.vertex = x.vertex;
                 tmpPath[ind].push_back(min);
-                branch_border(tmpPath[ind], count - 1);
+                branchBorder(tmpPath[ind], count - 1);
                 ind++;
             }
         }
     }
 
-    int s = tmpPath[0].size() - 1;
+    auto s = static_cast<int>(tmpPath[0].size() - 1);
     if (count == 1) {
-        //puts("Lower floor");
         operations_bb++;
-        if (tmpPath[0].at(s).h <= record) {
+        if (tmpPath[0].at(static_cast<unsigned long>(s)).height <= record) {
             operations_bb++;
-            finPath = tmpPath[0];
-            record = tmpPath[0].at(s).h;
+            final_path = tmpPath[0];
+            record = tmpPath[0].at(static_cast<unsigned long>(s)).height;
         }
     }
 
 }
 
-void Bust(vector<p> path, int count = N - 1, int m = 0) {
-    p x, min;
+void bustMethod(vector<Point> path, int count = N - 1, int m = 0) {
+    Point x{}, min{};
     vector<int> tmp;
-    int pSize = path.size(), ind = 0, mas;
-    vector<p> tmpPath[count];
-    min.h = inf;
+    int pSize = static_cast<int>(path.size()), ind = 0, mas;
+    vector<Point> tmpPath[count];
+    min.height = INF;
     for (int i = 0; i < pSize; ++i) {
-        tmp.push_back(path.at(i).v);
+        tmp.push_back(path.at(static_cast<unsigned long>(i)).vertex);
 
     }
 
@@ -187,91 +192,96 @@ void Bust(vector<p> path, int count = N - 1, int m = 0) {
     }
 
     tmp.push_back(0);
-    int tSize = tmp.size() - 1;
+    auto tSize = static_cast<int>(tmp.size() - 1);
 
     for (int i = 0; i < N; ++i) {
         operations_bust++;
-        if (!presence(path, i)) {
+        if (!isVertex(path, i)) {
             operations_bust++;
             mas = m;
-            tmp.at(tSize) = i;
-            mas += matrix[path.at(pSize - 1).v][i];
+            tmp.at(static_cast<unsigned long>(tSize)) = i;
+            mas += matrix[path.at(static_cast<unsigned long>(pSize - 1)).vertex][i];
             if (mas >= 0) {
                 operations_bust++;
-                x.h = mas;
-                x.v = i;
+                x.height = mas;
+                x.vertex = i;
                 tmpPath[ind].push_back(x);
-                Bust(tmpPath[ind], count - 1, m + matrix[path.at(pSize - 1).v][i]);
+                bustMethod(tmpPath[ind],
+                           count - 1,
+                           m + matrix[path.at(static_cast<unsigned long>(pSize - 1)).vertex][i]);
                 ind++;
             }
         }
     }
 
-    int s = tmpPath[0].size() - 1;
+    auto s = static_cast<int>(tmpPath[0].size() - 1);
     if (count == 1) {
-        tmpPath[0].at(s).h += matrix[tmpPath[0].at(s).v][tmpPath[0].at(0).v];
-        if (tmpPath[0].at(s).h < mass) {
+        tmpPath[0].at(static_cast<unsigned long>(s)).height +=
+                matrix[tmpPath[0].at(static_cast<unsigned long>(s)).vertex][tmpPath[0].at(0).vertex];
+        if (tmpPath[0].at(static_cast<unsigned long>(s)).height < mass) {
             operations_bust++;
-            finPath = tmpPath[0];
-            mass = tmpPath[0].at(s).h;
+            final_path = tmpPath[0];
+            mass = tmpPath[0].at(static_cast<unsigned long>(s)).height;
         }
     }
 
 }
 
-void path_print(vector<p> path) {
-    for (int i = 0; i < path.size(); ++i) {
-        cout << path.at(i).v + 1;
+void printPath(vector<Point> path) {
+    for (auto &i : path) {
+        cout << i.vertex + 1;
         cout << " -> ";
     }
-    cout << path.at(0).v + 1;
-    cout << "\nRecord(H) = " << path.at(path.size() - 1).h << "\n\n";
+    cout << path.at(0).vertex + 1;
+    cout << "\nRecord(H) = " << path.at(path.size() - 1).height << "\n\n";
 }
 
 int main() {
-    vector<p> v;
-    int startV;
-    p x;
+    vector<Point> search_vertex;
+    int start_vertex;
+    Point final_point{};
 
-    printf("Enter start vertex: ");
-    cin >> startV;
-    startV -= 1;
-    x.v = startV;
+    cout << "Enter start vertex: ";
+    cin >> start_vertex;
+    start_vertex -= 1;
+    final_point.vertex = start_vertex;
 
-    mass = inf;
+    mass = INF;
     ifstream fin("../input");
 
-    for (int i = 0; i < N; ++i)
-        for (int j = 0; j < N; ++j) {
+    for (auto &i : matrix)
+        for (int &j : i) {
             int tmp;
             fin >> tmp;
             if(tmp == 999){
-                matrix[i][j] = inf;
+                j = INF;
             } else {
-                matrix[i][j] = tmp;
+                j = tmp;
             }
         }
 
-    for (int i = 0; i < N; ++i) {
-        for (int j = 0; j < N; ++j) {
-            if (matrix[i][j] == inf) printf("b ");
-            else printf("%i ", matrix[i][j]);
+    for (auto &i : matrix) {
+        for (int j : i) {
+            if (j == INF) cout << "b ";
+            else cout << " " << j;
         }
-        puts("");
+        cout << endl;
     }
 
-    v.push_back(x);
+    search_vertex.push_back(final_point);
 
-    record = record_find(greedy(startV));
-    printf("\nH init = %i\n", record);
+    record = recordFind(isVisited(start_vertex));
+    cout << "\nH init = " << record << "\n";
     operations_bb = 0;
-    branch_border(v);
-    printf("Branches & borders method\nPath: ");
-    path_print(finPath);
-    Bust(v);
-    printf("Bust method\nPath: ");
-    path_print(finPath);
-    printf("\nBust operations = %i\nB&B method = %i\n", operations_bust, operations_bb);
+
+    branchBorder(search_vertex);
+    cout << "Branches & borders method\nPath: ";
+    printPath(final_path);
+
+    bustMethod(search_vertex);
+    cout << "Bust Method method\nPath: ";
+    printPath(final_path);
+    cout << "\nbustMethod operations = " << operations_bust << "\nB&B method = " << operations_bb << "\n";
 
     return 0;
 }
